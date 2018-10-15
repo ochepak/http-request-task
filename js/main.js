@@ -15,6 +15,11 @@ window.onload = () => {
         console.log(data);    
     });
 
+    axiosRequest(data => {
+        console.log('\nAxios request:');
+        console.log(data);
+    });
+
     function ajaxRequest(callback) {
         let xhr = new XMLHttpRequest();
         xhr.onreadystatechange = () => {
@@ -55,6 +60,16 @@ window.onload = () => {
                 callback(users);
             }).catch(e => {
                 console.error(e);
+            });
+    }
+
+    function axiosRequest(callback) {
+        axios.get('https://api.github.com/users')
+            .then(response => {
+                callback(response.data);
+            })
+            .catch(error => {
+                console.error('Axios request FAILED\n' + error);
             });
     }
 }
