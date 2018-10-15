@@ -5,6 +5,11 @@ window.onload = () => {
         console.log(data);
     });
 
+    jqueryRequest(data => {
+        console.log('\nJQuery request:');
+        console.log(data);
+    });
+
     function ajaxRequest(callback) {
         let xhr = new XMLHttpRequest();
         xhr.onreadystatechange = () => {
@@ -23,5 +28,13 @@ window.onload = () => {
             xhr.abort();
             console.error(error);
         }
+    }
+
+    function jqueryRequest(callback) {
+        $.get('https://api.github.com/users', data => {
+            callback(data);
+        }).fail(e => {
+            console.error('JQuery request FAILED\n' + e.status + ": " + e.statusText);
+        });
     }
 }
