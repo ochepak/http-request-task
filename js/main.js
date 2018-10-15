@@ -10,6 +10,11 @@ window.onload = () => {
         console.log(data);
     });
 
+    fetchRequest(data => {
+        console.log('\nFetch request:');
+        console.log(data);    
+    });
+
     function ajaxRequest(callback) {
         let xhr = new XMLHttpRequest();
         xhr.onreadystatechange = () => {
@@ -36,5 +41,20 @@ window.onload = () => {
         }).fail(e => {
             console.error('JQuery request FAILED\n' + e.status + ": " + e.statusText);
         });
+    }
+
+    function fetchRequest(callback) {
+        fetch('https://api.github.com/users')
+            .then(response => {
+                if (!response.ok) {
+                    console.error('Fatch request FAILED\n' + response.status + ": " + response.responseText);
+                    return;
+                }
+                return response.json();
+            }).then(users => {
+                callback(users);
+            }).catch(e => {
+                console.error(e);
+            });
     }
 }
