@@ -18,6 +18,7 @@ window.onload = () => {
     axiosRequest(data => {
         console.log('\nAxios request:');
         console.log(data);
+        renderList(data, 'list');
     });
 
     function ajaxRequest(callback) {
@@ -71,5 +72,35 @@ window.onload = () => {
             .catch(error => {
                 console.error('Axios request FAILED\n' + error);
             });
+    }
+
+    function renderList(list, containerId) {
+        let ul = document.getElementById(containerId);
+        let frag = document.createDocumentFragment();
+
+        //render each user
+        list.forEach(user => {
+            //creating elements
+            let li = document.createElement('li');
+            let idElem = document.createElement('span');
+            let imgElem = document.createElement('img');
+            let nameElem = document.createElement('a');
+
+            //elements setting
+            li.classList.add('list-group-item');
+            idElem.innerHTML = user.id + '.';
+            nameElem.setAttribute('href', user.url);
+            nameElem.setAttribute('target', '_blank');
+            nameElem.innerHTML = user.login;
+            imgElem.setAttribute('src', user.avatar_url);
+
+            //elements appending
+            li.append(idElem, imgElem, nameElem);
+            frag.appendChild(li);
+        });
+
+        //adding users in list
+        ul.innerHTML = '';
+        ul.appendChild(frag);
     }
 }
