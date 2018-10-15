@@ -15,11 +15,12 @@ window.onload = () => {
         console.log(data);    
     });
 
-    axiosRequest(data => {
-        console.log('\nAxios request:');
-        console.log(data);
-        renderList(data, 'list');
-    });
+    axiosRequest()
+        .then(data => {
+            console.log('\nAxios request:');
+            console.log(data);
+            renderList(data, 'list');
+        });
 
     function ajaxRequest(callback) {
         let xhr = new XMLHttpRequest();
@@ -32,13 +33,8 @@ window.onload = () => {
                 };
             };
         };
-        try {
-            xhr.open('GET', 'https://api.github.com/users');
-            xhr.send();
-        } catch (error) {
-            xhr.abort();
-            console.error(error);
-        }
+        xhr.open('GET', 'https://api.github.com/users');
+        xhr.send();
     }
 
     function jqueryRequest(callback) {
@@ -64,14 +60,10 @@ window.onload = () => {
             });
     }
 
-    function axiosRequest(callback) {
-        axios.get('https://api.github.com/users')
-            .then(response => {
-                callback(response.data);
-            })
-            .catch(error => {
-                console.error('Axios request FAILED\n' + error);
-            });
+    async function axiosRequest() {
+        let response = await axios.get('https://api.github.com/users')
+            .catch(error => console.error(`Axios request FAILED\n ${error}`));
+        return response.data;
     }
 
     function renderList(list, containerId) {
